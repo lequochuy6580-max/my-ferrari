@@ -1,0 +1,21 @@
+<div class="navbar">
+  <h1>My Ferrari</h1>
+  <div class="language-switcher">
+    <button [ngClass]="{'active': currentLanguage === 'vi'}" (click)="changeLanguage('vi')" class="lang-btn">🇻🇳 VI</button>
+    <button [ngClass]="{'active': currentLanguage === 'en'}" (click)="changeLanguage('en')" class="lang-btn">🇬🇧 EN</button>
+  </div>
+</div>
+<nav>
+  <a href="/">Trang Chủ</a>
+  <a href="/shop">Cửa Hàng</a>
+  <a href="/cart">Giỏ Hàng</a>
+  <a href="/checkout">Thanh Toán</a>
+  <a href="/contact">Liên Hệ</a>
+</nav>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+  <button onclick="searchProduct()">🔍</button>
+</div>
+<span id="userInfo">
+  <a href="/login">Đăng Nhập</a>
+</span>

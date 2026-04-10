@@ -1,0 +1,92 @@
+<div class="products-list-container">
+  <!-- Filter Buttons -->
+  <div class="filter-section">
+    <h2>Quản lý sản phẩm Ferrari</h2>
+    <div class="filter-buttons">
+      <button 
+        class="filter-btn" 
+        [class.active]="currentFilter === 'all'"
+        [disabled]="isFiltering"
+        (click)="applyFilter('all')">
+        Tất cả sản phẩm
+      </button>
+      <button 
+        class="filter-btn classic-btn" 
+        [class.active]="currentFilter === 'classic'"
+        [disabled]="isFiltering"
+        (click)="applyFilter('classic')">
+        🏛️ Xe cổ điển
+      </button>
+      <button 
+        class="filter-btn modern-btn" 
+        [class.active]="currentFilter === 'modern'"
+        [disabled]="isFiltering"
+        (click)="applyFilter('modern')">
+        🚀 Xe hiện đại
+      </button>
+      <button 
+        class="filter-btn sale-btn" 
+        [class.active]="currentFilter === 'sale'"
+        [disabled]="isFiltering"
+        (click)="applyFilter('sale')">
+        🔥 Đang giảm giá
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isFiltering" class="loading">
+    <p>Đang tải sản phẩm...</p>
+  </div>
+  
+  <!-- No Products State -->
+  <div *ngIf="!isFiltering && filteredProducts.length === 0" class="no-products">
+    <p>Không có sản phẩm nào</p>
+  </div>
+
+  <!-- Products Grid -->
+<div *ngIf="!isFiltering && filteredProducts.length > 0" class="products-grid">
+  <app-product-item
+    *ngFor="let product of paginatedProducts; let i = index"
+    [product]="product"
+    [loading]="i === 0 ? 'eager' : 'lazy'"
+    (addToCart)="addToCart($event)"
+    (viewProduct)="onViewProduct($event)">
+  </app-product-item>
+</div>
+
+  <!-- Product Count -->
+  <div *ngIf="!isFiltering && filteredProducts.length > 0" class="product-count">
+    <p>Tìm thấy <strong>{{ filteredProducts.length }}</strong> sản phẩm (Trang {{ currentPage }}/{{ totalPages }})</p>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div *ngIf="!isFiltering && totalPages > 1" class="pagination-container">
+    <!-- Previous Button -->
+    <button 
+      class="pagination-btn prev-btn" 
+      [disabled]="currentPage === 1"
+      (click)="previousPage()">
+      ← Trang trước
+    </button>
+
+    <!-- Page Numbers -->
+    <div class="page-numbers">
+      <button 
+        *ngFor="let page of getPageNumbers()"
+        class="page-btn" 
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)">
+        {{ page }}
+      </button>
+    </div>
+
+    <!-- Next Button -->
+    <button 
+      class="pagination-btn next-btn" 
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()">
+      Trang sau →
+    </button>
+  </div>
+</div>

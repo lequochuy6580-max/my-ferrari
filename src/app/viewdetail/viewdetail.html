@@ -1,0 +1,214 @@
+<div class="product-detail-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>⏳ Đang tải thông tin sản phẩm...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <h2>{{ errorMessage }}</h2>
+    <button class="btn btn-primary" (click)="goBack()">← Quay lại cửa hàng</button>
+  </div>
+
+  <!-- Product Detail -->
+  <div *ngIf="product && !isLoading && !errorMessage" class="product-detail fade-in">
+
+    <!-- Left: Product Image -->
+    <div class="product-image-section">
+      <div class="product-image-wrapper">
+        <img
+          [src]="getImageUrl()"
+          [alt]="product.name"
+          class="main-image"
+          width="500"
+          height="500"
+          (error)="onImageError($event)"
+        >
+        <div class="image-badge">⭐ FERRARI</div>
+      </div>
+      <div *ngIf="product.video" class="video-section">
+        <video [src]="product.video" autoplay muted loop class="product-video"></video>
+      </div>
+    </div>
+
+    <!-- Right: Product Info -->
+    <div class="product-info-section">
+      <div class="breadcrumb">
+        <a href="/shop" class="breadcrumb-link">🏠 Cửa hàng</a>
+        <span> > </span>
+        <span class="breadcrumb-current">{{ product.category || "Không xác định" }}</span>
+      </div>
+
+      <h1 class="product-title">{{ product.name }}</h1>
+
+      <div class="product-meta">
+        <span class="category-badge">{{ product.category || "General" }}</span>
+        <!-- Hiển thị rating trung bình thực -->
+        <span class="rating" *ngIf="reviews.length > 0">
+          <span class="stars-display">
+            <span *ngFor="let s of getStarsDisplay(averageRating)"
+                  [class]="'star-static ' + s">★</span>
+          </span>
+          {{ averageRating | number:'1.1-1' }}/5
+          ({{ reviews.length }} đánh giá)
+        </span>
+        <span class="rating" *ngIf="reviews.length === 0">
+          ☆☆☆☆☆ Chưa có đánh giá
+        </span>
+      </div>
+
+      <div class="price-section">
+        <span class="current-price">{{ product.price | number:'1.0-0' }} USD</span>
+        <span class="original-price">{{ (product.price * 1.2) | number:'1.0-0' }} USD</span>
+        <span class="discount-badge">-17%</span>
+      </div>
+
+      <div class="product-description">
+        <h3>📝 Mô tả sản phẩm</h3>
+        <p>{{ product.description || "Không có thông tin mô tả" }}</p>
+      </div>
+
+      <!-- Quantity Selector -->
+      <div class="quantity-section">
+        <label>Số lượng:</label>
+        <div class="quantity-selector">
+          <button class="qty-btn" (click)="decreaseQuantity()" [disabled]="quantity <= 1">−</button>
+          <input type="number" [(ngModel)]="quantity" min="1" class="qty-input" readonly>
+          <button class="qty-btn" (click)="increaseQuantity()">+</button>
+        </div>
+        <span class="qty-info">{{ quantity }} sản phẩm</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="product-actions">
+        <button class="btn btn-add-cart" (click)="addToCart()">
+          🛒 Thêm vào giỏ hàng
+        </button>
+        <!-- Nút Yêu thích có chức năng toggle -->
+        <button
+          class="btn btn-wishlist"
+          [class.wishlisted]="isWishlisted"
+          (click)="toggleWishlist()"
+        >
+          {{ isWishlisted ? '❤️ Đã yêu thích' : '🤍 Yêu thích' }}
+        </button>
+      </div>
+
+      <!-- Product Details Info -->
+      <div class="product-details-grid">
+        <div class="detail-item">
+          <span class="detail-label">🚗 Hãng:</span>
+          <span class="detail-value">Ferrari</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">📂 Danh mục:</span>
+          <span class="detail-value">{{ product.category || "Không xác định" }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">💰 Giá:</span>
+          <span class="detail-value">{{ product.price | number:'1.0-0' }} USD</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">📦 Trạng thái:</span>
+          <span class="detail-value status-in-stock">Còn hàng</span>
+        </div>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="trust-badges">
+        <div class="badge"><span class="badge-icon">✓</span><span class="badge-text">Hàng chính hãng</span></div>
+        <div class="badge"><span class="badge-icon">🚚</span><span class="badge-text">Giao hàng nhanh</span></div>
+        <div class="badge"><span class="badge-icon">↩️</span><span class="badge-text">Hoàn tiền 30 ngày</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ KHU VỰC ĐÁNH GIÁ ══════════════ -->
+  <div *ngIf="product && !isLoading && !errorMessage" class="reviews-section">
+
+    <div class="reviews-header">
+      <h2 class="reviews-title">⭐ Đánh Giá Sản Phẩm</h2>
+      <button
+        class="btn-write-review"
+        (click)="showReviewForm = !showReviewForm"
+        [class.active]="showReviewForm"
+      >
+        {{ showReviewForm ? '✕ Đóng' : '✏️ Viết đánh giá' }}
+      </button>
+    </div>
+
+    <!-- Thông báo sau khi gửi -->
+    <div class="review-alert success" *ngIf="reviewSuccess">{{ reviewSuccess }}</div>
+
+    <!-- Form viết đánh giá -->
+    <div class="review-form-card" *ngIf="showReviewForm">
+      <h3>Đánh giá của bạn</h3>
+
+      <!-- Chọn sao -->
+      <div class="star-picker">
+        <span
+          *ngFor="let star of [1,2,3,4,5]"
+          [class]="getStarClass(star)"
+          (click)="setRating(star)"
+          (mouseenter)="setHover(star)"
+          (mouseleave)="clearHover()"
+        >★</span>
+        <span class="star-hint" *ngIf="newRating > 0">
+          {{ ['','Tệ','Không tốt','Bình thường','Tốt','Tuyệt vời'][newRating] }}
+        </span>
+      </div>
+
+      <!-- Nhập nhận xét -->
+      <textarea
+        [(ngModel)]="newComment"
+        placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."
+        class="review-textarea"
+        rows="4"
+      ></textarea>
+
+      <div class="review-alert error" *ngIf="reviewError">{{ reviewError }}</div>
+
+      <button
+        class="btn-submit-review"
+        (click)="submitReview()"
+        [disabled]="isSubmittingReview"
+      >
+        {{ isSubmittingReview ? '⏳ Đang gửi...' : '📨 Gửi đánh giá' }}
+      </button>
+    </div>
+
+    <!-- Danh sách đánh giá -->
+    <div class="reviews-list" *ngIf="reviews.length > 0">
+      <div class="review-item" *ngFor="let review of reviews">
+        <div class="review-item-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">{{ review.username.charAt(0).toUpperCase() }}</div>
+            <div>
+              <span class="reviewer-name">{{ review.username }}</span>
+              <span class="review-date">{{ review.date }}</span>
+            </div>
+          </div>
+          <div class="review-stars-row">
+            <span *ngFor="let s of getStarsDisplay(review.rating)"
+                  [class]="'star-static ' + s">★</span>
+          </div>
+        </div>
+        <p class="review-body">{{ review.comment }}</p>
+      </div>
+    </div>
+
+    <!-- Empty reviews -->
+    <div class="reviews-empty" *ngIf="reviews.length === 0 && !showReviewForm">
+      <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá! ⭐</p>
+    </div>
+
+  </div>
+
+  <!-- Back Button -->
+  <div class="back-section">
+    <button class="btn btn-secondary" (click)="goBack()">← Quay lại cửa hàng</button>
+  </div>
+</div>
+
+<app-footer></app-footer>

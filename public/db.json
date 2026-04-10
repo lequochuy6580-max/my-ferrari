@@ -1,0 +1,337 @@
+{
+  "loai": [
+    {
+      "id": "1",
+      "ten_loai": "hypercar"
+    },
+    {
+      "id": "2",
+      "ten_loai": "hyper car le mans"
+    },
+    {
+      "id": "3",
+      "ten_loai": "classic"
+    },
+    {
+      "id": "4",
+      "ten_loai": "ferrari gto class"
+    },
+    {
+      "id": "5",
+      "ten_loai": "hybrid class"
+    },
+    {
+      "id": "6",
+      "ten_loai": "gte class"
+    },
+    {
+      "id": "7",
+      "ten_loai": "old leman car"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Ferrari SF90 Stradale",
+      "price": 500000,
+      "desc": "Hybrid hypercar with 1000hp",
+      "image": "media/sf90.1.jpg",
+      "Images": "media/sf90.1.jpg",
+      "description": "Advanced hybrid technology with V12 engine",
+      "category": "hybrid",
+      "featured": true,
+      "video": "media/sf90.mp4"
+    },
+    {
+      "id": 2,
+      "name": "Ferrari F8 Tributo",
+      "price": 276550,
+      "desc": "Classic V8 sports car",
+      "image": "media/f8.1.jpg",
+      "Images": "media/f8.1.jpg",
+      "description": "Mid-engine V8 with 720hp",
+      "category": "modern",
+      "featured": true,
+      "video": "media/f8.mp4"
+    },
+    {
+      "id": 3,
+      "name": "Ferrari 488 GTB",
+      "price": 300000,
+      "desc": "Iconic mid-engine sports car",
+      "image": "media/f488.3.jpg",
+      "Images": "media/f488.3.jpg",
+      "description": "V8 turbo with 670hp",
+      "category": "modern",
+      "featured": true,
+      "video": "media/488.mp4"
+    },
+    {
+      "id": 4,
+      "name": "Ferrari LaFerrari",
+      "price": 3500000,
+      "desc": "Limited edition hybrid hypercar",
+      "image": "media/wp1863671-ferrari-laferrari-wallpapers.jpg",
+      "Images": "media/wp1863671-ferrari-laferrari-wallpapers.jpg",
+      "description": "Hybrid hypercar with 950hp, only 500 made",
+      "category": "hypercar",
+      "featured": true,
+      "video": "media/laferrari.mp4"
+    },
+    {
+      "id": 5,
+      "name": "Ferrari Portofino M",
+      "price": 2150000,
+      "desc": "Convertible grand tourer",
+      "image": "media/f8.1.jpg",
+      "Images": "media/f8.1.jpg",
+      "description": "Convertible with V12 engine",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/f8.2.mp4"
+    },
+    {
+      "id": 6,
+      "name": "Ferrari 812 Superfast",
+      "price": 3300000,
+      "desc": "Front-engine V12 grand tourer",
+      "image": "media/sf90.2.jpg",
+      "Images": "media/sf90.2.jpg",
+      "description": "Front-engine V12 with 800hp",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/sf90.mp4"
+    },
+    {
+      "id": 7,
+      "name": "Ferrari Enzo",
+      "price": 3000000,
+      "desc": "Limited edition supercar legend",
+      "image": "media/enzo.1.jpg",
+      "Images": "media/enzo.1.jpg",
+      "description": "Limited edition V12 with 660hp, only 400 made",
+      "category": "hypercar",
+      "featured": true,
+      "video": "media/enzo.mp4"
+    },
+    {
+      "id": 8,
+      "name": "Ferrari F40",
+      "price": 1400000,
+      "desc": "Classic twin-turbo V8",
+      "image": "media/f40.1.jpg",
+      "Images": "media/f40.1.jpg",
+      "description": "Iconic 1987 twin-turbo V8 with 478hp",
+      "category": "classic",
+      "featured": true,
+      "video": "media/f40.mp4"
+    },
+    {
+      "id": 9,
+      "name": "Ferrari F430",
+      "price": 186925,
+      "desc": "Mid-engine sports car",
+      "image": "media/f430.1.jpg",
+      "Images": "media/f430.1.jpg",
+      "description": "Classic mid-engine V8 with 490hp",
+      "category": "classic",
+      "featured": true,
+      "video": "media/f430.mp4"
+    },
+    {
+      "id": 10,
+      "name": "Ferrari Monza SP1",
+      "price": 1900000,
+      "desc": "Limited edition speedster",
+      "image": "media/f40.3.jpg",
+      "Images": "media/f40.3.jpg",
+      "description": "Barchetta-style open cockpit speedster",
+      "category": "classic",
+      "featured": true,
+      "video": "media/f40.mp4"
+    },
+    {
+      "id": 11,
+      "name": "Ferrari California T",
+      "price": 2000000,
+      "desc": "Convertible grand tourer",
+      "image": "media/f430.4.jpg",
+      "Images": "media/f430.4.jpg",
+      "description": "Retractable hard-top convertible",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/f8.mp4"
+    },
+    {
+      "id": 12,
+      "name": "Ferrari Dino 246 GT",
+      "price": 1200000,
+      "desc": "Classic mid-engine sports car",
+      "image": "media/enzo.1.jpg",
+      "Images": "media/enzo.1.jpg",
+      "description": "Classic 1970s mid-engine legend",
+      "category": "classic",
+      "featured": true,
+      "video": "media/enzo.mp4"
+    },
+    {
+      "id": 13,
+      "name": "Ferrari F8 GTS",
+      "price": 2620000,
+      "desc": "Mid-engine V8 sports car",
+      "image": "media/f488.3.jpg",
+      "Images": "media/f488.3.jpg",
+      "description": "Open-top variant with removable targa roof",
+      "category": "modern",
+      "featured": true,
+      "video": "media/f8.mp4"
+    },
+    {
+      "id": 14,
+      "name": "Ferrari F12berlinetta",
+      "price": 3300000,
+      "desc": "Front-engine V12 grand tourer",
+      "image": "media/sf90.3.jpg",
+      "Images": "media/sf90.3.jpg",
+      "description": "Powerful front-engine V12 with 740hp",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/sf90.mp4"
+    },
+    {
+      "id": 15,
+      "name": "Ferrari 599 GTB Fiorano",
+      "price": 3100000,
+      "desc": "Front-engine V12 grand tourer",
+      "image": "media/f40.4.jpg",
+      "Images": "media/f40.4.jpg",
+      "description": "Front-engine V12 with 620hp",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/f40.mp4"
+    },
+    {
+      "id": 16,
+      "name": "Ferrari 458 Italia",
+      "price": 2400000,
+      "desc": "Mid-engine V8 sports car",
+      "image": "media/f430.1.jpg",
+      "Images": "media/f430.1.jpg",
+      "description": "Mid-engine V8 with 570hp",
+      "category": "modern",
+      "featured": true,
+      "video": "media/488.mp4"
+    },
+    {
+      "id": 17,
+      "name": "Ferrari F355",
+      "price": 900000,
+      "desc": "Classic mid-engine sports car",
+      "image": "media/enzo.5.jpg",
+      "Images": "media/enzo.5.jpg",
+      "description": "Classic 1990s mid-engine legend",
+      "category": "classic",
+      "featured": true,
+      "video": "media/f430.mp4"
+    },
+    {
+      "id": 18,
+      "name": "Ferrari Daytona SP3",
+      "price": 2200000,
+      "desc": "Spider with retro design",
+      "image": "media/dayota.1.jpg",
+      "Images": "media/dayota.1.jpg",
+      "description": "Modern interpretation of classic design",
+      "category": "modern",
+      "featured": true,
+      "video": "media/Ferrari Daytona SP3 exterior and interior.mp4"
+    },
+    {
+      "id": 19,
+      "name": "Ferrari GTC4Lusso",
+      "price": 2600000,
+      "desc": "Four-seat grand tourer",
+      "image": "media/sf90.4.jpg",
+      "Images": "media/sf90.4.jpg",
+      "description": "Practical four-seat grand tourer",
+      "category": "grand_tourer",
+      "featured": true,
+      "video": "media/sf90.mp4"
+    },
+    {
+      "id": 20,
+      "name": "Ferrari Testarossa",
+      "price": 1500000,
+      "desc": "Iconic 1980s supercar",
+      "image": "media/sf90.2.jpg",
+      "Images": "media/sf90.2.jpg",
+      "description": "Legendary flat-12 engine supercar",
+      "category": "classic",
+      "featured": false,
+      "video": "media/f40.mp4"
+    }
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "title": "Lịch Sử Ferrari: Từ Passion Đến Huyền Thoại",
+      "author": "Ferrari News",
+      "date": "2024-01-15",
+      "image": "media/sf90.1.jpg",
+      "category": "Lịch sử",
+      "excerpt": "Khám phá hành trình 75 năm của Ferrari từ những ngày đầu tiên cho đến hiện tại...",
+      "content": "Ferrari được thành lập năm 1947 bởi Enzo Ferrari, một huyền thoại trong thế giới ô tô. Từ những chiếc xe đua đầu tiên cho đến các siêu xe hiện đại, Ferrari luôn biểu tượng cho sự hoàn hảo, công nghệ tiên tiến và đam mê vô hạn."
+    },
+    {
+      "id": 2,
+      "title": "Ferrari SF90 Stradale: Tương Lai của Siêu Xe Hybrid",
+      "author": "Automotive Review",
+      "date": "2024-02-20",
+      "image": "media/sf90.2.jpg",
+      "category": "Công nghệ",
+      "excerpt": "SF90 Stradale là bước ngoặt lớn cho Ferrari khi lần đầu tiên sử dụng công nghệ hybrid...",
+      "content": "Ferrari SF90 Stradale là bước tiến quan trọng trong lịch sử của Ferrari. Đây là mẫu siêu xe đầu tiên của Ferrari sử dụng động cơ hybrid, kết hợp giữa động cơ V12 và hai động cơ điện."
+    },
+    {
+      "id": 3,
+      "title": "Ferrari LaFerrari: Hypercar Huyền Thoại",
+      "author": "Luxury News",
+      "date": "2024-03-10",
+      "image": "media/wp1863671-ferrari-laferrari-wallpapers.jpg",
+      "category": "Siêu xe",
+      "excerpt": "LaFerrari là đỉnh cao của công nghệ Ferrari, được sản xuất giới hạn chỉ 500 chiếc...",
+      "content": "LaFerrari là siêu xe đặc biệt nhất mà Ferrari từng sản xuất. Được tạo ra để kỷ niệm 70 năm thành lập, LaFerrari chỉ được sản xuất 500 chiếc trên toàn thế giới."
+    },
+    {
+      "id": 4,
+      "title": "Ferrari Enzo: Huyền Thoại Đã Qua",
+      "author": "Classic Cars",
+      "date": "2024-04-05",
+      "image": "media/enzo.3.webp",
+      "category": "Lịch sử",
+      "excerpt": "Enzo Ferrari là tác phẩm được đặt tên theo nhà sáng lập, đại diện cho thời kỳ vàng...",
+      "content": "Ferrari Enzo được đặt tên theo tên nhà sáng lập Enzo Ferrari, là một trong những siêu xe mang tính biểu tượng nhất trong lịch sử."
+    },
+    {
+      "id": 5,
+      "title": "Ferrari 812 Superfast: Grand Tourer Tối Ưu",
+      "author": "Auto Magazine",
+      "date": "2024-05-12",
+      "image": "media/sf90.2.jpg",
+      "category": "Công nghệ",
+      "excerpt": "812 Superfast mang lại sự hoàn hảo giữa hiệu suất extreme và sự thoải mái lái xe...",
+      "content": "Ferrari 812 Superfast là mẫu grand tourer được thiết kế để cung cấp sự cân bằng hoàn hảo giữa hiệu suất cao và sự thoải mái."
+    },
+    {
+      "id": 6,
+      "title": "Tương Lai của Ferrari: Hướng Tới Bền Vững",
+      "author": "Ferrari Corporate",
+      "date": "2024-06-08",
+      "image": "media/sf90.4.jpg",
+      "category": "Tin tức",
+      "excerpt": "Ferrari cam kết phát triển các công nghệ bền vững để bảo vệ tương lai môi trường...",
+      "content": "Trong những năm tới, Ferrari sẽ tiếp tục đầu tư vào các công nghệ bền vững. Cam kết của Ferrari không chỉ là về hiệu suất mà còn về trách nhiệm đối với môi trường."
+    }
+  ],
+  "orders": []
+}

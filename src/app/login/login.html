@@ -1,0 +1,63 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1>🏎 Đăng nhập</h1>
+
+    <!-- Thông báo lỗi đăng nhập -->
+    <div class="login-error" *ngIf="loginError">
+      {{ loginError }}
+    </div>
+
+    <form [formGroup]="loginfrom" (ngSubmit)="login()">
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Tên đăng nhập</label>
+        <input
+          id="username"
+          formControlName="username"
+          type="text"
+          class="form-control"
+          placeholder="Nhập tên đăng nhập"
+          autocomplete="username"
+        >
+        <div class="error-msg"
+          *ngIf="loginfrom.get('username')?.invalid && loginfrom.get('username')?.touched">
+          Vui lòng nhập tên đăng nhập.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          class="form-control"
+          placeholder="Nhập mật khẩu"
+          autocomplete="current-password"
+        >
+        <div class="error-msg"
+          *ngIf="loginfrom.get('password')?.invalid && loginfrom.get('password')?.touched">
+          Vui lòng nhập mật khẩu.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loginfrom.invalid || isLoading"
+      >
+        {{ isLoading ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+      </button>
+
+    </form>
+
+    <div class="login-footer">
+      Chưa có tài khoản? <a routerLink="/register">Đăng ký ngay</a>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

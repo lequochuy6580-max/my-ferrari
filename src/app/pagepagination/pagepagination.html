@@ -1,0 +1,56 @@
+<!-- ==========================================
+   PAGINATION COMPONENT TEMPLATE
+   ========================================== -->
+<!-- FIX: Dùng class cứng thay vì [class]="containerClass" để CSS luôn apply đúng -->
+<div class="pagination-container" *ngIf="totalPages > 1">
+
+  <!-- ===== NÚT TRANG TRƯỚC ===== -->
+  <button
+    class="pagination-prev"
+    [disabled]="!canPreviousPage()"
+    (click)="previousPage()"
+    aria-label="Trang trước"
+  >
+    <span>
+      <span class="icon">&#8592;</span>
+      <span class="text">Trang trước</span>
+    </span>
+  </button>
+
+  <!-- ===== SỐ TRANG ===== -->
+  <div class="page-numbers-wrapper">
+    <button
+      *ngFor="let page of getPageNumbers()"
+      class="page-number"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+      [attr.aria-label]="'Trang ' + page"
+      [attr.aria-current]="page === currentPage ? 'page' : null"
+    >
+      <span>{{ page }}</span>
+    </button>
+  </div>
+
+  <!-- ===== NÚT TRANG SAU ===== -->
+  <button
+    class="pagination-next"
+    [disabled]="!canNextPage()"
+    (click)="nextPage()"
+    aria-label="Trang sau"
+  >
+    <span>
+      <span class="text">Trang sau</span>
+      <span class="icon">&#8594;</span>
+    </span>
+  </button>
+
+  <!-- ===== THÔNG TIN TRANG ===== -->
+  <div class="page-info">
+    <p class="info-text">
+      Hiển thị <strong>{{ getStartIndex() }} - {{ getEndIndex() }}</strong>
+      trong tổng <strong>{{ items.length }}</strong> sản phẩm
+      (Trang <strong>{{ currentPage }}</strong> / <strong>{{ totalPages }}</strong>)
+    </p>
+  </div>
+
+</div>

@@ -1,0 +1,147 @@
+/* ==========================================
+   PAGINATION COMPONENT STYLES - Ferrari Theme
+   ========================================== */
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 40px auto;
+  padding: 24px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(204, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* ===== PREV / NEXT ===== */
+.pagination-prev,
+.pagination-next {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: #cc0000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.pagination-prev:hover:not(:disabled),
+.pagination-next:hover:not(:disabled) {
+  background: #e60000;
+  transform: translateY(-2px);
+}
+
+.pagination-prev:active:not(:disabled),
+.pagination-next:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pagination-prev:disabled,
+.pagination-next:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.pagination-prev .icon,
+.pagination-next .icon {
+  font-size: 15px;
+}
+
+/* ===== PAGE NUMBERS ===== */
+.page-numbers-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-number {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1.5px solid #cc0000;
+  border-radius: 6px;
+  color: #cc0000;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.page-number:hover:not(.active) {
+  background: rgba(204, 0, 0, 0.12);
+  color: #ff4444;
+  border-color: #ff4444;
+  transform: translateY(-2px);
+}
+
+.page-number.active {
+  background: #cc0000;
+  color: #fff;
+  border-color: #cc0000;
+}
+
+/* ===== PAGE INFO ===== */
+.page-info {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.info-text {
+  color: #888;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+.info-text strong {
+  color: #cc0000;
+  font-weight: 700;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .pagination-container {
+    gap: 6px;
+    padding: 16px 12px;
+  }
+
+  .pagination-prev,
+  .pagination-next {
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+
+  .pagination-prev .text,
+  .pagination-next .text {
+    display: none;
+  }
+
+  .page-number {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .page-number {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+}

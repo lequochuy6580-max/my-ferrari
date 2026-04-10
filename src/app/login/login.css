@@ -1,0 +1,147 @@
+/* ==========================================
+   LOGIN PAGE - Ferrari Theme
+   ========================================== */
+
+.login-wrapper {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login-card {
+  background: #111;
+  border: 1px solid rgba(204, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card h1 {
+  color: #cc0000;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+}
+
+/* ===== FORM ===== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #ccc;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 11px 14px;
+  background: #000;
+  border: 1.5px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #cc0000;
+}
+
+.form-control.ng-invalid.ng-touched {
+  border-color: #ff4444;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.error-msg {
+  color: #ff4444;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* ===== LOGIN ERROR BANNER ===== */
+.login-error {
+  background: rgba(204, 0, 0, 0.12);
+  border: 1px solid rgba(204, 0, 0, 0.4);
+  border-radius: 6px;
+  color: #ff6666;
+  font-size: 13px;
+  text-align: center;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #cc0000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 8px;
+}
+
+.btn-login:hover:not(:disabled) {
+  background: #e60000;
+  transform: translateY(-2px);
+}
+
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* ===== FOOTER LINK ===== */
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #888;
+}
+
+.login-footer a {
+  color: #cc0000;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-footer a:hover {
+  color: #ff4444;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 20px;
+  }
+
+  .login-card h1 {
+    font-size: 20px;
+  }
+}

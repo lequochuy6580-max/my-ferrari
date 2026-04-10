@@ -1,0 +1,111 @@
+<div class="checkout-container">
+  <!-- Alert Messages -->
+  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <!-- Empty Cart -->
+  <div *ngIf="cart.length === 0 && !successMessage" class="empty-cart">
+    <h2>🛒 Giỏ hàng trống</h2>
+    <p>Vui lòng thêm sản phẩm trước khi thanh toán.</p>
+    <a href="/shop" class="back-link">← Quay lại cửa hàng</a>
+  </div>
+
+  <!-- Checkout Layout: 2 cột ngang nhau -->
+  <div *ngIf="cart.length > 0 && !successMessage" class="checkout-wrapper">
+
+    <!-- CỘT TRÁI: Form giao hàng -->
+    <div class="col-left">
+      <form (ngSubmit)="handleCheckout($event)" class="checkout-form">
+        <h3>💳 Thông tin giao hàng</h3>
+
+        <div class="form-group">
+          <label>Tên đầy đủ <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="checkoutForm.fullName" name="fullName"
+                 placeholder="Nhập tên của bạn" required [disabled]="isProcessing">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" [(ngModel)]="checkoutForm.email" name="email"
+                   placeholder="your@email.com" required [disabled]="isProcessing">
+          </div>
+          <div class="form-group">
+            <label>Điện thoại <span class="required">*</span></label>
+            <input type="tel" [(ngModel)]="checkoutForm.phone" name="phone"
+                   placeholder="+84 9xx xxx xxx" required [disabled]="isProcessing">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Địa chỉ <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="checkoutForm.address" name="address"
+                 placeholder="Nhập địa chỉ đầy đủ" required [disabled]="isProcessing">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Thành phố <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="checkoutForm.city" name="city"
+                   placeholder="TP. Hồ Chí Minh" required [disabled]="isProcessing">
+          </div>
+          <div class="form-group">
+            <label>Mã bưu điện <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="checkoutForm.zipCode" name="zipCode"
+                   placeholder="70000" required [disabled]="isProcessing">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phương thức thanh toán</label>
+          <select [(ngModel)]="checkoutForm.paymentMethod" name="paymentMethod" [disabled]="isProcessing">
+            <option value="credit-card">💳 Thẻ tín dụng</option>
+            <option value="bank-transfer">🏦 Chuyển khoản ngân hàng</option>
+            <option value="cod">🚚 Thanh toán khi nhận</option>
+            <option value="e-wallet">📱 Ví điện tử</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-order" [disabled]="isProcessing || cart.length === 0">
+            {{ isProcessing ? '⏳ Đang xử lý...' : '✅ Đặt hàng ngay' }}
+          </button>
+          <a href="/shop" class="btn-continue">← Tiếp tục mua sắm</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- CỘT PHẢI: Tóm tắt đơn hàng -->
+    <div class="col-right">
+      <div class="order-summary">
+        <h3>📦 Tóm tắt đơn hàng</h3>
+
+        <div class="summary-items">
+          <div *ngFor="let item of cart" class="summary-item">
+            <img [src]="item.img" [alt]="item.name" class="item-image">
+            <div class="item-details">
+              <p class="item-name">{{ item.name }}</p>
+              <p class="item-price">{{ item.price | number:'1.0-0' }} USD × {{ item.quantity }}</p>
+            </div>
+            <p class="item-total">{{ (item.price * item.quantity) | number:'1.0-0' }} USD</p>
+          </div>
+        </div>
+
+        <div class="summary-totals">
+          <div class="summary-row">
+            <span>Tổng sản phẩm:</span>
+            <span>{{ totalItems }}</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-grand">
+            <span>Tổng tiền:</span>
+            <span class="grand-amount">{{ total | number:'1.0-0' }} USD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-footer></app-footer>

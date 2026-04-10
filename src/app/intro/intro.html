@@ -1,0 +1,57 @@
+<!-- ============================
+     FULL SCREEN INTRO
+============================= -->
+<div *ngIf="showFull" class="intro-fullscreen" [class.exiting]="isExiting" (click)="skipIntro()">
+
+  <!-- Animated background lines -->
+  <div class="intro-bg-lines">
+    <span *ngFor="let i of [1,2,3,4,5,6,7,8]" class="bg-line" [attr.data-index]="i"></span>
+  </div>
+
+  <!-- Red sweep bar -->
+  <div class="intro-sweep"></div>
+
+  <!-- Center content -->
+  <div class="intro-center">
+
+    <!-- Ferrari Logo -->
+    <div class="intro-logo-wrapper">
+      <img class="intro-horse" src="media/logoferrari-removebg-preview.png" alt="Ferrari Logo">
+      <div class="intro-logo-glow"></div>
+    </div>
+
+    <!-- Brand name -->
+    <div class="intro-brand">
+      <span class="intro-my">MY</span>
+      <span class="intro-ferrari">FERRARI</span>
+    </div>
+
+    <!-- Tagline -->
+    <p class="intro-tagline">The Power of Speed &amp; Style</p>
+
+    <!-- Loading bar -->
+    <div class="intro-progress">
+      <div class="intro-progress-bar"></div>
+    </div>
+
+    <p class="intro-skip">Click anywhere to skip</p>
+  </div>
+
+  <!-- Corner decorations -->
+  <div class="intro-corner intro-corner--tl"></div>
+  <div class="intro-corner intro-corner--tr"></div>
+  <div class="intro-corner intro-corner--bl"></div>
+  <div class="intro-corner intro-corner--br"></div>
+</div>
+
+<!-- ============================
+     MINI INTRO BAR (page transitions)
+============================= -->
+<div *ngIf="showMini" class="intro-mini">
+  <div class="intro-mini-inner">
+    <img src="media/logoferrari-removebg-preview.png" alt="Ferrari" class="intro-mini-horse" style="width:20px;height:24px;object-fit:contain;">
+    <span class="intro-mini-divider"></span>
+    <span class="intro-mini-name">{{ pageName }}</span>
+    <span class="intro-mini-line"></span>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="news-container">
+  <!-- Header -->
+  <div class="news-header">
+    <h1 class="news-title">Ferrari Blog</h1>
+    <p class="news-subtitle">Le ultime notizie dal mondo Ferrari</p>
+  </div>
+
+  <!-- Category Filter -->
+  <div class="category-filter">
+    <button
+      *ngFor="let cat of categories"
+      class="category-btn"
+      [class.active]="cat === activeCategory"
+      (click)="filterByCategory(cat)">
+      {{ cat | titlecase }}
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading articles...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && error" class="error-state">
+    <p>⚠️ {{ error }}</p>
+  </div>
+
+  <!-- Articles Grid -->
+  <div *ngIf="!isLoading && !error" class="articles-grid">
+    <div *ngIf="filteredArticles.length === 0" class="no-articles">
+      No articles found in this category.
+    </div>
+
+    <div
+      *ngFor="let article of filteredArticles; trackBy: trackByArticleId"
+      class="article-card"
+      (click)="goToBlogDetail(article.id)">
+
+      <div class="article-image-wrapper">
+        <img
+          [src]="article.image"
+          [alt]="article.title"
+          class="article-image"
+          (error)="$any($event.target).src='media/sf90.1.jpg'" />
+        <span class="article-category-badge">{{ article.category }}</span>
+      </div>
+
+      <div class="article-content">
+        <h2 class="article-title-card">{{ article.title }}</h2>
+        <p class="article-excerpt">{{ article.excerpt }}</p>
+        <div class="article-meta">
+          <span class="article-author">📝 {{ article.author }}</span>
+          <span class="article-date">📅 {{ formatDate(article.date) }}</span>
+        </div>
+        <button class="read-more-btn" (click)="$event.stopPropagation(); goToBlogDetail(article.id)">
+          Read More →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

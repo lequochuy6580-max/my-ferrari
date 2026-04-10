@@ -1,0 +1,88 @@
+<div class="blog-page">
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="state-wrapper">
+    <div class="spinner"></div>
+    <p class="state-text">Loading article...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && error" class="state-wrapper">
+    <div class="error-icon">⚠️</div>
+    <p class="state-text error-text">{{ error }}</p>
+    <button class="btn-back" (click)="goBack()">← Back to Blog</button>
+  </div>
+
+  <!-- Article Content -->
+  <article *ngIf="!isLoading && !error && article" class="article-wrapper">
+
+    <!-- Hero Section -->
+    <div class="article-hero">
+      <img
+        [src]="article.image"
+        [alt]="article.title"
+        class="hero-image"
+        (error)="$any($event.target).src='media/sf90.1.jpg'" />
+      <div class="hero-overlay">
+        <div class="hero-meta">
+          <span class="hero-category">{{ article.category }}</span>
+        </div>
+        <h1 class="hero-title">{{ article.title }}</h1>
+        <div class="hero-info">
+          <span class="hero-author">📝 {{ article.author }}</span>
+          <span class="hero-divider">|</span>
+          <span class="hero-date">📅 {{ formatDate(article.date) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="article-nav">
+      <button class="btn-back" (click)="goBack()">← Back to Blog</button>
+    </div>
+
+    <!-- Article Body -->
+    <div class="article-body">
+      <p class="article-excerpt-lead">{{ article.excerpt }}</p>
+      <div class="article-content" [innerHTML]="article.content || article.body || article.excerpt"></div>
+    </div>
+
+    <!-- Tags -->
+    <div *ngIf="article.tags?.length" class="article-tags">
+      <span class="tag" *ngFor="let tag of article.tags">#{{ tag }}</span>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider">
+      <span class="divider-label">Related Articles</span>
+    </div>
+
+    <!-- Related Articles -->
+    <div *ngIf="relatedArticles.length > 0" class="related-grid">
+      <div
+        *ngFor="let rel of relatedArticles; trackBy: trackById"
+        class="related-card"
+        (click)="goToArticle(rel.id)">
+        <div class="related-image-wrapper">
+          <img
+            [src]="rel.image"
+            [alt]="rel.title"
+            class="related-image"
+            (error)="$any($event.target).src='media/sf90.1.jpg'" />
+        </div>
+        <div class="related-content">
+          <span class="related-category">{{ rel.category }}</span>
+          <h3 class="related-title">{{ rel.title }}</h3>
+          <span class="related-date">{{ formatDate(rel.date) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="relatedArticles.length === 0" class="no-related">
+      No related articles found.
+    </div>
+
+  </article>
+</div>
+
+<app-footer></app-footer>

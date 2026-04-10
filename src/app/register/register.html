@@ -1,0 +1,118 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1>🏎 Đăng ký</h1>
+
+    <!-- Thông báo thành công -->
+    <div class="success-msg" *ngIf="registerSuccess">
+      ✅ Đăng ký thành công! Đang chuyển hướng...
+    </div>
+
+    <!-- Thông báo lỗi -->
+    <div class="login-error" *ngIf="registerError">
+      {{ registerError }}
+    </div>
+
+    <form [formGroup]="registerfrom" (ngSubmit)="register()" *ngIf="!registerSuccess">
+
+      <!-- Họ tên -->
+      <div class="form-group">
+        <label for="fullname">Họ và tên</label>
+        <input
+          id="fullname"
+          formControlName="fullname"
+          type="text"
+          class="form-control"
+          placeholder="Nhập họ và tên"
+          autocomplete="name"
+        >
+        <div class="error-msg" *ngIf="f('fullname')?.invalid && f('fullname')?.touched">
+          <span *ngIf="f('fullname')?.errors?.['required']">Vui lòng nhập họ tên.</span>
+          <span *ngIf="f('fullname')?.errors?.['minlength']">Tối thiểu 3 ký tự.</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          class="form-control"
+          placeholder="Nhập địa chỉ email"
+          autocomplete="email"
+        >
+        <div class="error-msg" *ngIf="f('email')?.invalid && f('email')?.touched">
+          <span *ngIf="f('email')?.errors?.['required']">Vui lòng nhập email.</span>
+          <span *ngIf="f('email')?.errors?.['email']">Email không hợp lệ.</span>
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Tên đăng nhập</label>
+        <input
+          id="username"
+          formControlName="username"
+          type="text"
+          class="form-control"
+          placeholder="Nhập tên đăng nhập"
+          autocomplete="username"
+        >
+        <div class="error-msg" *ngIf="f('username')?.invalid && f('username')?.touched">
+          <span *ngIf="f('username')?.errors?.['required']">Vui lòng nhập tên đăng nhập.</span>
+          <span *ngIf="f('username')?.errors?.['minlength']">Tối thiểu 4 ký tự.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          class="form-control"
+          placeholder="Tối thiểu 6 ký tự"
+          autocomplete="new-password"
+        >
+        <div class="error-msg" *ngIf="f('password')?.invalid && f('password')?.touched">
+          <span *ngIf="f('password')?.errors?.['required']">Vui lòng nhập mật khẩu.</span>
+          <span *ngIf="f('password')?.errors?.['minlength']">Tối thiểu 6 ký tự.</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Xác nhận mật khẩu</label>
+        <input
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          type="password"
+          class="form-control"
+          placeholder="Nhập lại mật khẩu"
+          autocomplete="new-password"
+        >
+        <div class="error-msg" *ngIf="f('confirmPassword')?.touched && registerfrom.errors?.['passwordMismatch']">
+          Mật khẩu xác nhận không khớp.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="registerfrom.invalid || isLoading"
+      >
+        {{ isLoading ? 'Đang xử lý...' : 'Tạo tài khoản' }}
+      </button>
+
+    </form>
+
+    <div class="login-footer">
+      Đã có tài khoản? <a routerLink="/login">Đăng nhập</a>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

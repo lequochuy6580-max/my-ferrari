@@ -1,0 +1,362 @@
+<div class="admin-container">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <h2 class="admin-title">🔧 ADMIN PANEL</h2>
+    <nav class="admin-nav">
+      <button class="nav-btn" [class.active]="currentTab==='dashboard'"  (click)="switchTab('dashboard')">📊 Dashboard</button>
+      <button class="nav-btn" [class.active]="currentTab==='products'"   (click)="switchTab('products')">🚗 Sản phẩm</button>
+      <button class="nav-btn" [class.active]="currentTab==='categories'" (click)="switchTab('categories')">📂 Danh mục</button>
+      <button class="nav-btn" [class.active]="currentTab==='customers'"  (click)="switchTab('customers')">👥 Khách hàng</button>
+      <button class="nav-btn" [class.active]="currentTab==='orders'"     (click)="switchTab('orders')">📦 Đơn hàng</button>
+      <button class="nav-btn" [class.active]="currentTab==='statistics'" (click)="switchTab('statistics')">📈 Thống kê</button>
+    </nav>
+    <div class="admin-footer">
+      <button class="export-btn" (click)="exportData()">📥 Export Data</button> 
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-content">
+    <div *ngIf="isLoading" class="loading-state"><p>⏳ Đang tải dữ liệu...</p></div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section *ngIf="currentTab==='dashboard'" class="tab-content">
+      <h1>📊 Dashboard</h1>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🚗</div>
+          <h3>Sản phẩm</h3>
+          <p class="stat-value">{{ totalProducts }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <h3>Doanh thu</h3>
+          <p class="stat-value">${{ totalRevenue.toLocaleString() }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <h3>Khách hàng</h3>
+          <p class="stat-value">{{ totalCustomers }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <h3>Đơn hàng</h3>
+          <p class="stat-value">{{ totalOrders }}</p>
+        </div>
+      </div>
+
+      <!-- Thống kê đơn hàng theo trạng thái -->
+      <div class="stats-grid" style="margin-top:16px">
+        <div class="stat-card">
+          <div class="stat-icon">🕐</div>
+          <h3>Chờ xử lý</h3>
+          <p class="stat-value">{{ countByStatus('pending') }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <h3>Đã xác nhận</h3>
+          <p class="stat-value">{{ countByStatus('confirmed') }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚚</div>
+          <h3>Đang giao</h3>
+          <p class="stat-value">{{ countByStatus('shipping') }}</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎉</div>
+          <h3>Đã giao</h3>
+          <p class="stat-value">{{ countByStatus('delivered') }}</p>
+        </div>
+      </div>
+
+      <div class="dashboard-info">
+        <p>✅ Dashboard cập nhật từ localStorage theo thời gian thực</p>
+        <p>💾 Đơn hàng từ trang Checkout sẽ tự động hiển thị tại đây</p>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section *ngIf="currentTab==='products'" class="tab-content">
+      <h1>🚗 Quản lý sản phẩm</h1>
+      <div class="search-box">
+        <input type="text" placeholder="🔍 Tìm kiếm sản phẩm..." [(ngModel)]="searchKeyword" (keyup)="searchProducts()">
+        <span class="search-result">Tìm thấy {{ filteredProducts.length }} sản phẩm</span>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()" class="product-form">
+        <h2>{{ editingProductIndex !== null ? '✏️ Sửa sản phẩm' : '➕ Thêm sản phẩm mới' }}</h2>
+        <div class="form-group"><label>Tên sản phẩm:</label><input type="text" formControlName="name" placeholder="Nhập tên sản phẩm"></div>
+        <div class="form-group"><label>Giá (USD):</label><input type="number" formControlName="price" placeholder="0"></div>
+        <div class="form-group">
+          <label>Danh mục:</label>
+          <select formControlName="category">
+            <option value="">Chọn danh mục</option>
+            <option *ngFor="let cat of categories" [value]="cat.ten_loai || cat.name">{{ cat.ten_loai || cat.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ảnh:</label>
+          <input type="text" formControlName="image" placeholder="https://...">
+          <input type="file" accept="image/*" (change)="onImageSelected($event)">
+          <img *ngIf="imgPreviewUrl" [src]="imgPreviewUrl" class="img-preview">
+        </div>
+        <div class="form-group"><label>Mô tả:</label><textarea formControlName="description" placeholder="Mô tả sản phẩm"></textarea></div>
+        <div class="form-group"><label>Video URL:</label><input type="text" formControlName="video" placeholder="media/sf90.mp4"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">{{ editingProductIndex !== null ? '💾 Cập nhật' : '➕ Thêm' }}</button>
+          <button *ngIf="editingProductIndex !== null" type="button" class="btn-secondary" (click)="editingProductIndex=null; productForm.reset(); imgPreviewUrl=null">❌ Hủy</button>
+        </div>
+      </form>
+
+      <div class="table-wrapper">
+        <table class="products-table">
+          <thead><tr><th>Tên sản phẩm</th><th>Giá</th><th>Danh mục</th><th>Ảnh</th><th>Hành động</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts; let i = index">
+              <td>{{ product.name }}</td>
+              <td>${{ product.price.toLocaleString() }}</td>
+              <td>{{ product.category || 'N/A' }}</td>
+              <td>
+                <img *ngIf="product.image" [src]="product.image" class="table-product-img" onerror="this.src='https://via.placeholder.com/60'">
+                <span *ngIf="!product.image">Không có ảnh</span>
+              </td>
+              <td class="action-buttons">
+                <button class="btn-edit" (click)="editProduct(i)">✏️ Sửa</button>
+                <button class="btn-delete" (click)="deleteProduct(i)">🗑️ Xóa</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section *ngIf="currentTab==='categories'" class="tab-content">
+      <h1>📂 Quản lý danh mục</h1>
+      <div class="category-form">
+        <input type="text" [(ngModel)]="newCategoryName" placeholder="Nhập tên danh mục mới" (keyup.enter)="addCategory()">
+        <button (click)="addCategory()" class="btn-primary">➕ Thêm</button>
+      </div>
+      <div class="category-list">
+        <div class="category-item" *ngFor="let cat of categories; let i = index">
+          <span>📂 {{ cat.ten_loai || cat.name }}</span>
+          <button class="btn-delete" (click)="deleteCategory(i)">🗑️ Xóa</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CUSTOMERS ===== -->
+    <section *ngIf="currentTab==='customers'" class="tab-content">
+      <h1>👥 Quản lý khách hàng</h1>
+      <div class="info-box">
+        <p>📊 Tổng khách hàng đã đăng ký: <strong>{{ customers.length }}</strong></p>
+      </div>
+      <div *ngIf="customers.length === 0" class="info-box" style="border-color:#ffa500">
+        <p>⚠️ Chưa có khách hàng nào đăng ký. Khách hàng sẽ hiển thị ở đây sau khi họ đăng ký tài khoản.</p>
+      </div>
+      <div class="table-wrapper" *ngIf="customers.length > 0">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Địa chỉ</th><th>Ngày tham gia</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let customer of customers; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ customer.name }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.phone || 'N/A' }}</td>
+              <td>{{ customer.address || 'N/A' }}</td>
+              <td>{{ customer.createdAt }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== ORDERS ===== -->
+    <section *ngIf="currentTab==='orders'" class="tab-content">
+      <h1>📦 Quản lý đơn hàng</h1>
+
+      <!-- Tóm tắt trạng thái -->
+      <div class="stats-grid" style="margin-bottom:20px">
+        <div class="stat-card"><div class="stat-icon">🕐</div><h3>Chờ xử lý</h3><p class="stat-value">{{ countByStatus('pending') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><h3>Đã xác nhận</h3><p class="stat-value">{{ countByStatus('confirmed') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">🚚</div><h3>Đang giao</h3><p class="stat-value">{{ countByStatus('shipping') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">🎉</div><h3>Đã giao</h3><p class="stat-value">{{ countByStatus('delivered') }}</p></div>
+      </div>
+
+      <div class="info-box">
+        <p>📊 Tổng đơn hàng: <strong>{{ orders.length }}</strong> &nbsp;|&nbsp;
+           💰 Doanh thu: <strong>${{ totalRevenue.toLocaleString() }}</strong></p>
+      </div>
+
+      <div *ngIf="orders.length === 0" class="info-box" style="border-color:#ffa500">
+        <p>⚠️ Chưa có đơn hàng nào. Đơn hàng sẽ hiển thị ở đây sau khi khách hàng thanh toán.</p>
+      </div>
+
+      <div class="table-wrapper" *ngIf="orders.length > 0">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Khách hàng</th>
+              <th>Email</th>
+              <th>Sản phẩm</th>
+              <th>Tổng tiền</th>
+              <th>Ngày đặt</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ order.customer }}</td>
+              <td>{{ order.email || 'N/A' }}</td>
+              <td>
+                <span *ngIf="order.items && order.items.length > 0">
+                  {{ order.items.length }} sản phẩm
+                  <ul style="margin:4px 0 0; padding-left:16px; font-size:12px; color:#aaa">
+                    <li *ngFor="let item of order.items">{{ item.name }} × {{ item.quantity }}</li>
+                  </ul>
+                </span>
+                <span *ngIf="!order.items || order.items.length === 0">N/A</span>
+              </td>
+              <td>${{ (order.total || 0).toLocaleString() }}</td>
+              <td>{{ order.date }}</td>
+              <td>
+                <!-- Dropdown đổi trạng thái trực tiếp -->
+                <select
+                  class="status-select"
+                  [value]="order.status"
+                  (change)="updateOrderStatus(i, $any($event.target).value)">
+                  <option value="pending">🕐 Chờ xử lý</option>
+                  <option value="confirmed">✅ Đã xác nhận</option>
+                  <option value="shipping">🚚 Đang giao</option>
+                  <option value="delivered">🎉 Đã giao</option>
+                  <option value="cancelled">❌ Đã hủy</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== STATISTICS ===== -->
+    <section *ngIf="currentTab==='statistics'" class="tab-content">
+      <h1>📈 Thống kê</h1>
+
+      <!-- KPI Cards -->
+      <div class="stats-grid">
+        <div class="stat-card highlight"><div class="stat-icon">🚗</div><h3>Tổng sản phẩm</h3><p class="stat-value">{{ totalProducts }}</p></div>
+        <div class="stat-card highlight"><div class="stat-icon">💰</div><h3>Doanh thu</h3><p class="stat-value">${{ totalRevenue.toLocaleString() }}</p></div>
+        <div class="stat-card highlight"><div class="stat-icon">👥</div><h3>Khách hàng</h3><p class="stat-value">{{ totalCustomers }}</p></div>
+        <div class="stat-card highlight"><div class="stat-icon">📦</div><h3>Đơn hàng</h3><p class="stat-value">{{ totalOrders }}</p></div>
+      </div>
+
+      <!-- Order Status -->
+      <div class="stats-grid" style="margin-top:16px">
+        <div class="stat-card"><div class="stat-icon">🕐</div><h3>Chờ xử lý</h3><p class="stat-value">{{ countByStatus('pending') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><h3>Đã xác nhận</h3><p class="stat-value">{{ countByStatus('confirmed') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">🚚</div><h3>Đang giao</h3><p class="stat-value">{{ countByStatus('shipping') }}</p></div>
+        <div class="stat-card"><div class="stat-icon">🎉</div><h3>Đã giao</h3><p class="stat-value">{{ countByStatus('delivered') }}</p></div>
+      </div>
+
+      <!-- BIỂU ĐỒ DOANH THU THEO THÁNG -->
+      <div class="chart-section">
+        <h2 class="chart-title">📊 Doanh thu theo tháng (năm hiện tại)</h2>
+        <div class="bar-chart">
+          <div class="chart-y-labels">
+            <span>{{ formatRevenue(maxMonthlyRevenue) }}</span>
+            <span>{{ formatRevenue(maxMonthlyRevenue * 0.75) }}</span>
+            <span>{{ formatRevenue(maxMonthlyRevenue * 0.5) }}</span>
+            <span>{{ formatRevenue(maxMonthlyRevenue * 0.25) }}</span>
+            <span>$0</span>
+          </div>
+          <div class="chart-bars-area">
+            <div class="chart-grid-lines">
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+            </div>
+            <div class="chart-bars">
+              <div class="chart-bar-col" *ngFor="let m of monthlyStats">
+                <div class="chart-bar-tooltip">
+                  <strong>{{ m.month }}</strong><br>
+                  Doanh thu: {{ formatRevenue(m.revenue) }}<br>
+                  Đơn hàng: {{ m.orders }}
+                </div>
+                <div class="chart-bar-fill"
+                     [style.height.%]="getBarHeight(m.revenue)"
+                     [class.has-value]="m.revenue > 0">
+                  <span class="bar-value" *ngIf="m.revenue > 0">{{ formatRevenue(m.revenue) }}</span>
+                </div>
+                <span class="chart-bar-label">{{ m.month }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIỂU ĐỒ ĐƠN HÀNG THEO THÁNG -->
+      <div class="chart-section">
+        <h2 class="chart-title">📦 Số đơn hàng theo tháng</h2>
+        <div class="bar-chart orders-chart">
+          <div class="chart-y-labels">
+            <span>{{ maxMonthlyOrders }}</span>
+            <span>{{ (maxMonthlyOrders * 0.75) | number:'1.0-0' }}</span>
+            <span>{{ (maxMonthlyOrders * 0.5) | number:'1.0-0' }}</span>
+            <span>{{ (maxMonthlyOrders * 0.25) | number:'1.0-0' }}</span>
+            <span>0</span>
+          </div>
+          <div class="chart-bars-area">
+            <div class="chart-grid-lines">
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+            </div>
+            <div class="chart-bars">
+              <div class="chart-bar-col" *ngFor="let m of monthlyStats">
+                <div class="chart-bar-tooltip">
+                  <strong>{{ m.month }}</strong><br>
+                  Đơn hàng: {{ m.orders }}
+                </div>
+                <div class="chart-bar-fill order-bar"
+                     [style.height.%]="maxMonthlyOrders > 0 ? (m.orders / maxMonthlyOrders * 100) : 0"
+                     [class.has-value]="m.orders > 0">
+                  <span class="bar-value" *ngIf="m.orders > 0">{{ m.orders }}</span>
+                </div>
+                <span class="chart-bar-label">{{ m.month }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TỶ LỆ TRẠNG THÁI ĐƠN HÀNG -->
+      <div class="chart-section" *ngIf="totalOrders > 0">
+        <h2 class="chart-title">📋 Tỷ lệ trạng thái đơn hàng</h2>
+        <div class="status-bars">
+          <div class="status-bar-row" *ngFor="let s of [
+            {key:'pending',    label:'Chờ xử lý',    color:'#f59e0b'},
+            {key:'confirmed',  label:'Đã xác nhận',  color:'#10b981'},
+            {key:'shipping',   label:'Đang giao',    color:'#3b82f6'},
+            {key:'delivered',  label:'Đã giao',      color:'#cc0000'},
+            {key:'cancelled',  label:'Đã hủy',       color:'#6b7280'}
+          ]">
+            <span class="status-label">{{ s.label }}</span>
+            <div class="status-bar-track">
+              <div class="status-bar-fill"
+                   [style.width.%]="totalOrders > 0 ? (countByStatus(s.key) / totalOrders * 100) : 0"
+                   [style.background]="s.color">
+              </div>
+            </div>
+            <span class="status-count">{{ countByStatus(s.key) }} / {{ totalOrders }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

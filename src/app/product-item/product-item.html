@@ -1,0 +1,47 @@
+<div *ngIf="product" class="product-card fade-in">
+  <div class="media-container">
+ <img
+  [src]="getImageUrl()"
+  [loading]="loading"
+  (error)="onImageError($event)"
+  alt="{{ product?.name }}"
+/>
+    <video *ngIf="product.video"
+           [src]="product.video"
+           muted
+           loop
+           class="product-video">
+    </video>
+    <!-- Sale Badge -->
+    <div *ngIf="isOnSale()" class="sale-badge">
+      -{{ getDiscountPercentage() }}%
+    </div>
+  </div>
+  <div class="product-info">
+    <h4 class="product-name">{{ product.name }}</h4>
+    
+    <!-- Price Section -->
+    <div class="price-section">
+      <div *ngIf="isOnSale()" class="price-on-sale">
+        <span class="original-price">{{ product.price | number:'1.0-0' }} USD</span>
+        <span class="sale-price">{{ getSalePrice() | number:'1.0-0' }} USD</span>
+      </div>
+      <div *ngIf="!isOnSale()" class="price-normal">
+        {{ product.price | number:'1.0-0' }} USD
+      </div>
+      <div *ngIf="isOnSale()" class="savings">
+        Tiết kiệm: {{ getSavings() | number:'1.0-0' }} USD
+      </div>
+    </div>
+
+    <!-- Category Badge -->
+    <div *ngIf="product.category" class="category-badge" [ngClass]="'category-' + product.category">
+      {{ getCategoryLabel() }}
+    </div>
+    
+    <div class="product-actions">
+      <button class="btn" (click)="onViewProduct()">Xem Chi Tiết</button>
+      <button class="btn" (click)="onAddToCart()">🛒 Thêm Giỏ</button>
+    </div>
+  </div>
+</div>

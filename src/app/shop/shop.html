@@ -1,0 +1,85 @@
+<div class="shop-container">
+
+  <!-- HERO BANNER -->
+  <div class="shop-hero">
+    <div class="shop-hero-content">
+      <h1 class="shop-title">CỬA HÀNG <span>FERRARI</span></h1>
+      <p class="shop-subtitle">Khám phá những siêu xe đỉnh cao của nước Ý</p>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="shop-toolbar">
+    <!-- Search -->
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Tìm kiếm siêu xe..."
+        [(ngModel)]="searchKeyword"
+        (input)="onSearchInput()"
+        (keyup.enter)="onSearchInput()">
+      <button *ngIf="searchKeyword" class="clear-btn" (click)="clearSearch()">✕</button>
+    </div>
+
+    <!-- Filter buttons - DYNAMIC từ admin -->
+    <div class="filter-group">
+      <button
+        *ngFor="let cat of filterCategories"
+        class="filter-btn"
+        [class.active]="currentFilter === cat.key"
+        [class.sale-btn]="cat.key === 'sale'"
+        (click)="setFilter(cat.key)">
+        {{ cat.icon }} {{ cat.label }}
+      </button>
+    </div>
+
+    <!-- Sort -->
+    <div class="sort-group">
+      <label class="sort-label">Sắp Xếp:</label>
+      <select class="sort-select" [(ngModel)]="sortOrder" (change)="setSortOrder(sortOrder)">
+        <option value="default">Mặc định</option>
+        <option value="asc">Giá tăng dần ↑</option>
+        <option value="desc">Giá giảm dần ↓</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- RESULT BAR -->
+  <div class="result-bar" *ngIf="!isLoading">
+    <span *ngIf="searchKeyword" class="search-tag">
+      Kết quả cho "<strong>{{ searchKeyword }}</strong>"
+      <button class="tag-clear" (click)="clearSearch()">✕</button>
+    </span>
+    <span class="result-count">{{ totalResults }} sản phẩm</span>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Đang tải sản phẩm...</p>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="!isLoading && filteredProducts.length === 0" class="empty-state">
+    <div class="empty-icon">🏎️</div>
+    <h3>Không tìm thấy sản phẩm</h3>
+    <p *ngIf="searchKeyword">Thử từ khóa khác hoặc xóa bộ lọc</p>
+    <button class="reset-btn" (click)="clearSearch(); setFilter('all')">Xem tất cả sản phẩm</button>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div *ngIf="!isLoading && filteredProducts.length > 0" class="products-grid">
+    <app-product-item
+      *ngFor="let product of filteredProducts; let i = index"
+      [product]="product"
+      [loading]="i === 0 ? 'eager' : 'lazy'"
+      (addToCart)="addToCart($event)"
+      (viewProduct)="onViewProduct($event)">
+    </app-product-item>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

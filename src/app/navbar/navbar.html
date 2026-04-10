@@ -1,0 +1,72 @@
+<nav class="navbar">
+  <div class="navbar-inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="navbar-logo">
+      <img src="media/ferrari-logo.png" alt="Ferrari" height="36" onerror="this.style.display='none'">
+      <span class="logo-text">MY FERRARI</span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="nav-links">
+      <li><a routerLink="/"     class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Trang chủ</a></li>
+      <li><a routerLink="/shop" class="nav-link" routerLinkActive="active">Cửa hàng</a></li>
+      <li><a routerLink="/news" class="nav-link" routerLinkActive="active">Tin tức</a></li>
+      <li><a routerLink="/cart" class="nav-link" routerLinkActive="active">🛒 Giỏ hàng</a></li>
+    </ul>
+
+    <!-- Auth Area (desktop) -->
+    <div class="nav-auth">
+
+      <!-- Chưa đăng nhập -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/login"    class="btn-nav btn-ghost">Đăng nhập</a>
+        <a routerLink="/register" class="btn-nav btn-red">Đăng ký</a>
+      </ng-container>
+
+      <!-- Đã đăng nhập -->
+      <div class="user-menu-wrapper" *ngIf="isLoggedIn">
+        <button class="user-trigger" (click)="toggleUserMenu()">
+          <div class="user-avatar">{{ avatarInitial }}</div>
+          <span class="user-name">{{ currentUser }}</span>
+          <span class="chevron" [class.open]="isUserMenuOpen">▾</span>
+        </button>
+
+        <div class="user-dropdown" [class.show]="isUserMenuOpen">
+          <a routerLink="/profile"  class="dropdown-item" (click)="isUserMenuOpen=false"><span>👤</span> Hồ sơ cá nhân</a>
+          <a routerLink="/cart"     class="dropdown-item" (click)="isUserMenuOpen=false"><span>🛒</span> Giỏ hàng</a>
+          <a routerLink="/checkout" class="dropdown-item" (click)="isUserMenuOpen=false"><span>💳</span> Đặt hàng</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item dropdown-logout" (click)="logout()"><span>🚪</span> Đăng xuất</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hamburger (mobile) -->
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="isMenuOpen">
+    <a routerLink="/"     class="mobile-link" (click)="isMenuOpen=false">Trang chủ</a>
+    <a routerLink="/shop" class="mobile-link" (click)="isMenuOpen=false">Cửa hàng</a>
+    <a routerLink="/news" class="mobile-link" (click)="isMenuOpen=false">Tin tức</a>
+    <a routerLink="/cart" class="mobile-link" (click)="isMenuOpen=false">🛒 Giỏ hàng</a>
+
+    <div class="mobile-divider"></div>
+
+    <ng-container *ngIf="!isLoggedIn">
+      <a routerLink="/login"    class="mobile-link"         (click)="isMenuOpen=false">Đăng nhập</a>
+      <a routerLink="/register" class="mobile-link mobile-link-red" (click)="isMenuOpen=false">Đăng ký</a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn">
+      <a routerLink="/profile" class="mobile-link" (click)="isMenuOpen=false">👤 Hồ sơ - {{ currentUser }}</a>
+      <button class="mobile-link mobile-link-red mobile-logout" (click)="logout()">🚪 Đăng xuất</button>
+    </ng-container>
+  </div>
+</nav>

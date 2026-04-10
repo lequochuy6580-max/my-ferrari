@@ -1,0 +1,58 @@
+<!-- Slideshow Section -->
+<div class="slideshow-container">
+  <img class="slideshow-image active" src="media/1987-Ferrari-F40-004.jpg" alt="Ferrari F40" width="1600" height="600">
+  <img class="slideshow-image" src="media/2003-Ferrari-Enzo1383682_.webp" alt="Ferrari Enzo" width="1600" height="600">
+  <img class="slideshow-image" src="media/2020-Ferrari-F8-Tributo-007-1600.jpg" alt="Ferrari F8 Tributo" width="1600" height="600">
+  <img class="slideshow-image" src="media/dean_smith-enzo_laf-130.jpg" alt="Ferrari Enzo & LaFerrari" width="1600" height="600">
+  <img class="slideshow-image" src="media/ferrari-488-gtb-car-red-cars-wallpaper-preview.jpg" alt="Ferrari 488 GTB" width="1600" height="600">
+  <img class="slideshow-image" src="media/red-car-car-luxury-vehicle-red-wallpaper-preview.jpg" alt="Luxury Ferrari" width="1600" height="600">
+  <img class="slideshow-image" src="media/red-lights-ferrari-ferrari-the-bridge-hd-wallpaper-preview.jpg" alt="Ferrari The Bridge" width="1600" height="600">
+  <img class="slideshow-image" src="media/pexels-alessandro-carrarini-31300621-12576612.jpg" alt="Ferrari sf90" width="1600" height="600">
+  
+  <button class="prev" onclick="changeSlide(-1)">❮</button>
+  <button class="next" onclick="changeSlide(1)">❯</button>
+</div>
+
+<!-- Thumbnails -->
+<div class="thumbnail-container">
+  <img class="thumbnail active" src="media/1987-Ferrari-F40-004.jpg" onclick="jumpToSlide(0)" width="100" height="100">
+  <img class="thumbnail" src="media/2003-Ferrari-Enzo1383682_.webp" onclick="jumpToSlide(1)" width="100" height="100">
+  <img class="thumbnail" src="media/2020-Ferrari-F8-Tributo-007-1600.jpg" onclick="jumpToSlide(2)" width="100" height="100">
+  <img class="thumbnail" src="media/dean_smith-enzo_laf-130.jpg" onclick="jumpToSlide(3)" width="100" height="100">
+  <img class="thumbnail" src="media/ferrari-488-gtb-car-red-cars-wallpaper-preview.jpg" onclick="jumpToSlide(4)" width="100" height="100">
+  <img class="thumbnail" src="media/red-car-car-luxury-vehicle-red-wallpaper-preview.jpg" onclick="jumpToSlide(5)" width="100" height="100">
+  <img class="thumbnail" src="media/red-lights-ferrari-ferrari-the-bridge-hd-wallpaper-preview.jpg" onclick="jumpToSlide(6)" width="100" height="100">
+  <img class="thumbnail" src="media/pexels-alessandro-carrarini-31300621-12576612.jpg" onclick="jumpToSlide(7)" width="100" height="100">
+</div>
+
+<!-- Video Section -->
+<div class="video">
+  <video autoplay muted loop>
+    <source src="media/sf90.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+</div>
+
+<!-- Background Audio is managed by AudioService -->
+
+<!-- Main Content (Product List) -->
+<main id="main-content" role="main"></main>
+
+<!-- Blog Section -->
+<section class="blog-section">
+  <div class="container">
+    <div class="blog-section-header">
+      <h2>📰 Ferrari Blog</h2>
+      <p>Khám phá những câu chuyện tuyệt vời về thương hiệu Ferrari</p>
+      <a routerLink="/news" class="view-all-blog">Xem Tất Cả Bài Viết →</a>
+    </div>
+    <div id="home-blog-container" class="home-blog-grid">
+      <div class="loading">Đang tải...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<app-footer></app-footer>
+
+<!-- End of Home Component -->

@@ -1,0 +1,268 @@
+<div class="profile-wrapper">
+  <div class="profile-container">
+
+    <!-- Header Banner -->
+    <div class="profile-banner">
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <div class="avatar-ring">
+          <div class="avatar">{{ avatarInitial }}</div>
+        </div>
+        <div class="banner-info">
+          <h1 class="profile-name">{{ fullname || username }}</h1>
+          <p class="profile-username">&#64;{{ username }}</p>
+          <span class="profile-badge">🏎 Ferrari Member</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button class="tab-btn" [class.active]="activeTab === 'info'" (click)="setTab('info')">
+        👤 Thông Tin
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'orders'" (click)="setTab('orders')">
+        📦 Đơn Hàng
+        <span class="tab-badge" *ngIf="orders.length > 0">{{ orders.length }}</span>
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'wishlist'" (click)="setTab('wishlist')">
+        ❤️ Yêu Thích
+        <span class="tab-badge" *ngIf="wishlist.length > 0">{{ wishlist.length }}</span>
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'reviews'" (click)="setTab('reviews')">
+        ⭐ Đánh Giá
+        <span class="tab-badge" *ngIf="reviews.length > 0">{{ reviews.length }}</span>
+      </button>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="profile-grid">
+
+      <!-- ══════════════ TAB: THÔNG TIN ══════════════ -->
+      <ng-container *ngIf="activeTab === 'info'">
+
+        <!-- LEFT: Info Card -->
+        <div class="profile-card info-card">
+          <div class="card-header">
+            <h2>Thông Tin Cá Nhân</h2>
+            <button class="btn-edit" (click)="toggleEdit()" [class.active]="isEditing">
+              {{ isEditing ? '✕ Huỷ' : '✏️ Chỉnh sửa' }}
+            </button>
+          </div>
+
+          <div class="alert alert-success" *ngIf="saveSuccess">✅ Cập nhật thông tin thành công!</div>
+          <div class="alert alert-error"   *ngIf="saveError">❌ {{ saveError }}</div>
+
+          <!-- Chế độ xem -->
+          <div class="info-display" *ngIf="!isEditing">
+            <div class="info-row">
+              <span class="info-label">👤 Họ tên</span>
+              <span class="info-value">{{ fullname || '(Chưa cập nhật)' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">🔑 Tên đăng nhập</span>
+              <span class="info-value">{{ username }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">📧 Email</span>
+              <span class="info-value">{{ email || '(Chưa cập nhật)' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">📅 Ngày tham gia</span>
+              <span class="info-value">{{ joinDate }}</span>
+            </div>
+          </div>
+
+          <!-- Chế độ chỉnh sửa -->
+          <form [formGroup]="editForm" (ngSubmit)="saveProfile()" *ngIf="isEditing" class="edit-form">
+            <div class="form-group">
+              <label>Họ và tên</label>
+              <input formControlName="fullname" type="text" class="form-input" placeholder="Nhập họ và tên">
+              <div class="error-msg" *ngIf="f('fullname')?.invalid && f('fullname')?.touched">Họ tên tối thiểu 3 ký tự.</div>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input formControlName="email" type="email" class="form-input" placeholder="Nhập email">
+              <div class="error-msg" *ngIf="f('email')?.invalid && f('email')?.touched">Email không hợp lệ.</div>
+            </div>
+            <button type="submit" class="btn-save" [disabled]="isSaving">
+              {{ isSaving ? 'Đang lưu...' : '💾 Lưu thay đổi' }}
+            </button>
+          </form>
+        </div>
+
+        <!-- RIGHT: Stats + Actions -->
+        <div class="profile-right">
+
+          <!-- Stats Card -->
+          <div class="profile-card stats-card">
+            <h2>Hoạt Động</h2>
+            <div class="stats-grid">
+              <div class="stat-item" (click)="setTab('orders')" style="cursor:pointer">
+                <span class="stat-number">{{ orders.length }}</span>
+                <span class="stat-label">Đơn hàng</span>
+              </div>
+              <div class="stat-item" (click)="setTab('wishlist')" style="cursor:pointer">
+                <span class="stat-number">{{ wishlist.length }}</span>
+                <span class="stat-label">Yêu thích</span>
+              </div>
+              <div class="stat-item" (click)="setTab('reviews')" style="cursor:pointer">
+                <span class="stat-number">{{ reviews.length }}</span>
+                <span class="stat-label">Đánh giá</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="profile-card actions-card">
+            <h2>Truy cập nhanh</h2>
+            <div class="quick-links">
+              <a routerLink="/shop"     class="quick-link"><span class="ql-icon">🏪</span><span>Cửa hàng</span><span class="ql-arrow">→</span></a>
+              <a routerLink="/cart"     class="quick-link"><span class="ql-icon">🛒</span><span>Giỏ hàng</span><span class="ql-arrow">→</span></a>
+              <a routerLink="/news"     class="quick-link"><span class="ql-icon">📰</span><span>Tin tức</span><span class="ql-arrow">→</span></a>
+              <a routerLink="/checkout" class="quick-link"><span class="ql-icon">💳</span><span>Thanh toán</span><span class="ql-arrow">→</span></a>
+            </div>
+          </div>
+
+          <!-- Password Card -->
+          <div class="profile-card password-card">
+            <div class="card-header">
+              <h2>Bảo Mật</h2>
+              <button class="btn-edit" (click)="togglePasswordChange()" [class.active]="isChangingPassword">
+                {{ isChangingPassword ? '✕ Huỷ' : '🔒 Đổi mật khẩu' }}
+              </button>
+            </div>
+            <div class="alert alert-success" *ngIf="passwordSuccess">✅ Đổi mật khẩu thành công!</div>
+            <div class="alert alert-error"   *ngIf="passwordError">❌ {{ passwordError }}</div>
+            <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" *ngIf="isChangingPassword" class="edit-form">
+              <div class="form-group">
+                <label>Mật khẩu hiện tại</label>
+                <input formControlName="currentPassword" type="password" class="form-input" placeholder="Nhập mật khẩu hiện tại">
+                <div class="error-msg" *ngIf="pf('currentPassword')?.invalid && pf('currentPassword')?.touched">Vui lòng nhập mật khẩu hiện tại.</div>
+              </div>
+              <div class="form-group">
+                <label>Mật khẩu mới</label>
+                <input formControlName="newPassword" type="password" class="form-input" placeholder="Tối thiểu 6 ký tự">
+                <div class="error-msg" *ngIf="pf('newPassword')?.invalid && pf('newPassword')?.touched">Mật khẩu mới tối thiểu 6 ký tự.</div>
+              </div>
+              <div class="form-group">
+                <label>Xác nhận mật khẩu mới</label>
+                <input formControlName="confirmPassword" type="password" class="form-input" placeholder="Nhập lại mật khẩu mới">
+                <div class="error-msg" *ngIf="pf('confirmPassword')?.invalid && pf('confirmPassword')?.touched">Vui lòng xác nhận mật khẩu.</div>
+              </div>
+              <button type="submit" class="btn-save" [disabled]="isSaving">
+                {{ isSaving ? 'Đang lưu...' : '🔐 Cập nhật mật khẩu' }}
+              </button>
+            </form>
+            <p class="security-note" *ngIf="!isChangingPassword">Bảo vệ tài khoản bằng cách đổi mật khẩu định kỳ.</p>
+          </div>
+
+          <button class="btn-logout" (click)="logout()">🚪 Đăng xuất</button>
+        </div>
+      </ng-container>
+
+      <!-- ══════════════ TAB: ĐƠN HÀNG ══════════════ -->
+      <div class="tab-full-width" *ngIf="activeTab === 'orders'">
+        <div class="profile-card">
+          <h2>📦 Đơn Hàng Của Tôi</h2>
+
+          <!-- Empty state -->
+          <div class="empty-state" *ngIf="orders.length === 0">
+            <div class="empty-icon">📦</div>
+            <p>Bạn chưa có đơn hàng nào.</p>
+            <a routerLink="/shop" class="btn-shop">🏎 Khám phá cửa hàng</a>
+          </div>
+
+          <!-- Order list -->
+          <div class="order-list" *ngIf="orders.length > 0">
+            <div class="order-card" *ngFor="let order of orders">
+              <div class="order-header">
+                <div class="order-meta">
+                  <span class="order-id">#{{ order.id }}</span>
+                  <span class="order-date">{{ order.date }}</span>
+                </div>
+                <span class="order-status-badge"
+                      [style.background]="getStatusInfo(order.status || '').color + '22'"
+                      [style.color]="getStatusInfo(order.status || '').color"
+                      [style.border]="'1px solid ' + getStatusInfo(order.status || '').color + '55'">
+                  {{ getStatusInfo(order.status || '').icon }} {{ getStatusInfo(order.status || '').label }}
+                </span>
+              </div>
+
+              <!-- Items trong đơn -->
+              <div class="order-items" *ngIf="order.items && order.items.length > 0">
+                <div class="order-item-row" *ngFor="let item of order.items">
+                  <img [src]="item.img || 'media/sf90.1.jpg'" [alt]="item.name" class="order-item-img">
+                  <div class="order-item-info">
+                    <span class="order-item-name">{{ item.name }}</span>
+                    <span class="order-item-qty">x{{ item.quantity }}</span>
+                  </div>
+                  <span class="order-item-price">{{ item.price * item.quantity | number:'1.0-0' }} USD</span>
+                </div>
+              </div>
+
+              <div class="order-footer">
+                <span class="order-total-label">Tổng tiền:</span>
+                <span class="order-total">{{ order.total | number:'1.0-0' }} USD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════ TAB: YÊU THÍCH ══════════════ -->
+      <div class="tab-full-width" *ngIf="activeTab === 'wishlist'">
+        <div class="profile-card">
+          <h2>❤️ Sản Phẩm Yêu Thích</h2>
+
+          <div class="empty-state" *ngIf="wishlist.length === 0">
+            <div class="empty-icon">❤️</div>
+            <p>Bạn chưa có sản phẩm yêu thích nào.</p>
+            <a routerLink="/shop" class="btn-shop">🏎 Khám phá cửa hàng</a>
+          </div>
+
+          <div class="wishlist-grid" *ngIf="wishlist.length > 0">
+            <div class="wishlist-card" *ngFor="let item of wishlist; let i = index">
+              <img [src]="getItemImage(item)" [alt]="item.name" class="wishlist-img">
+              <div class="wishlist-info">
+                <h3 class="wishlist-name">{{ item.name }}</h3>
+                <p class="wishlist-price">{{ item.price | number:'1.0-0' }} USD</p>
+              </div>
+              <div class="wishlist-actions">
+                <a [routerLink]="['/viewdetail']" [queryParams]="{id: item.id}" class="btn-view">Xem</a>
+                <button class="btn-remove" (click)="removeFromWishlist(i)">🗑</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════ TAB: ĐÁNH GIÁ ══════════════ -->
+      <div class="tab-full-width" *ngIf="activeTab === 'reviews'">
+        <div class="profile-card">
+          <h2>⭐ Đánh Giá Của Tôi</h2>
+
+          <div class="empty-state" *ngIf="reviews.length === 0">
+            <div class="empty-icon">⭐</div>
+            <p>Bạn chưa có đánh giá nào.</p>
+            <a routerLink="/shop" class="btn-shop">🏎 Mua hàng và đánh giá ngay</a>
+          </div>
+
+          <div class="review-list" *ngIf="reviews.length > 0">
+            <div class="review-card" *ngFor="let review of reviews">
+              <div class="review-header">
+                <span class="review-product">{{ review.productName || 'Sản phẩm' }}</span>
+                <span class="review-date">{{ review.date }}</span>
+              </div>
+              <div class="review-stars">{{ getStars(review.rating || 0) }}</div>
+              <p class="review-comment">{{ review.comment }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end profile-grid -->
+  </div>
+</div>
+
+<app-footer></app-footer>
