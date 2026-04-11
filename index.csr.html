@@ -11,3 +11,10 @@
   <app-root></app-root>
 <script src="main-3V6SE7US.js" type="module"></script></body>
 </html>
+<script>
+  var redirect = sessionStorage.getItem('redirect');
+  if (redirect) {
+    sessionStorage.removeItem('redirect');
+    history.replaceState(null, null, redirect);
+  }
+</script>
